@@ -48,3 +48,9 @@
 \newcommand{\0}{\mathbf{0}}
 
 \newcommand{\units}[1]{\mathrm{\;#1}}
+
+
+\DeclareCaptionFont{white}{\color{white}}
+\DeclareCaptionFormat{code}{\colorbox[cmyk]{0.43, 0.35, 0.35,0.01}{\parbox{\textwidth}{\hspace{15pt}#1#2#3}}}
+\newenvironment{code}{\captionsetup{type=listing,format=code,labelfont=white,textfont=white,font=bf,margin=0pt}}{}
+\newmintinline[inlinecode]{cpp}{}

@@ -1,11 +1,12 @@
 \documentclass[letterpaper]{article}
 % Set target color model to RGB
-\usepackage[inner=1.5cm,outer=1.5cm,top=1.5cm,bottom=1.5cm]{geometry}
+\usepackage[inner=2cm,outer=2cm,top=2cm,bottom=2cm]{geometry}
 \usepackage{setspace}
 \usepackage[rgb]{xcolor}
 \usepackage{lmodern}
 \usepackage{float}
 \usepackage{verbatim}
+\usepackage{caption}
 \usepackage{subcaption}
 \usepackage{amsgen,amsmath,amstext,amsbsy,amsopn,tikz,amssymb,tkz-linknodes}
 \usepackage{fancyhdr}
@@ -31,36 +32,70 @@ pdfproducer={PDFLaTeX},%
 
 
 \begin{document}
-\homework{Assignment X}{Due: mm/dd/yyyy}{Ferguson \& Pierson}{}{William Bergen}
+\homework{Assignment 2}{Due: 09/13/2020}{Ferguson \& Pierson}{}{William Bergen}
 
 \section{Design}
-A \textsc{Triangle} class is used to encapsulate the triangle shape. The constructor accepts three integer values, where each integer represents the length of one side of the triangle. The constructor checks the three arguments to make sure a valid triangle can be created. A triangle is considered valid if the sum of two sides is greater than the third side. Thus, if the three sides are $a$, $b$, and $c$, the following three conditions need to be met: $a + b > c$, $a + c > b$, and $b + c > a$. If these three conditions are not met, the constructor will throw an \textsc{InvalidTriangleException}, which contains the relevant information about the three side lengths that led to the invalid triangle. The \textsc{Triangle} class will have the method getType() that returns an enum describing the triangle type. The possible enum values are equilateral, isosceles, and scalene. The method returns equilateral if all sides are equal, isosceles if two sides are equal, and scalene if no sides are equal. These classes will be contained in a \textsc{Shape} static library so that other executables (main, unit tests, etc.) can link to them. Figure~\ref{fig:triangle} shows a UML class diagram for the \textsc{Shape} library.
+A \inlinecode{Statistic} class is used to perform statistical calculations on a set of data. The class stores a private vector of doubles which act as the current data set for calculations. A vector was used as the underlying data structure since it is easy to resize, and append new data. Three constructors are available to instantiate a \inlinecode{Statistic} object. The default constructor takes no arguments, and does not initialize the current data set. The second constructor accepts a \inlinecode{vector<double>}, and uses them to initialize the current data set. The third constructor accepts an \inlinecode{initializer_list<double>} that is used to initialize the current data set. Two methods are available to append data to the current data set. The first \inlinecode{add()} method accepts a single \inlinecode{double} and appends it to the current data set. The second \inlinecode{add()} method accepts a \inlinecode{vector<double>}
+and appends it to the current data set. A \inlinecode{replaceData()} method that accepts a \inlinecode{vector<double>} is available to clear and replace the current data set. A simple \inlinecode{size()} method is available to get the current data set size. Two methods are available to provide statistical analysis of the current data set. The \inlinecode{mean()} method computes the arithmetic mean of the current data set according to Eq.~\eqref{eq:mean} where $x_i\in X$ is the $i^{th}$ item in the data set, and N is the total number of items in the data set. If the data set is empty, the method returns \inlinecode{NaN}.
+\begin{equation}
+    \mu = \frac{\sum x_i}{N}
+    \label{eq:mean}
+\end{equation}
+The \inlinecode{standardDeviation()} method computes the standard deviation of the current data set according to Eq.~\eqref{eq:std} where $x_i \in X$ is the $i^{th}$ item in the data set, and N is the total number of items in the data set. If the data set is empty, the method returns \inlinecode{NaN}.
+\begin{equation}
+    \sigma = \sqrt{\frac{\sum x_i^2 - \left( \sum x_i \right)^2/N}{N-1}}
+    \label{eq:std}
+\end{equation}
+Finally, a utility class \inlinecode{FileUtil} is used to parse a csv file into a \inlinecode{vector<double>}. The main entry point into the program parses a csv file containing 1000 numbers that were generated for Discussion 1, and prints the mean and standard deviation of the data set by utilizing the \inlinecode{Statistic} class. Figure~\ref{fig:classdiagram} shows a UML class diagram of the classes used for this assignment.
 
 \begin{figure}[H]
     \centering
     \includegraphics[scale=0.7]{figures/classdiagram.png}
-    \caption{Triangle and InvalidTriangleException class UML}
-    \label{fig:triangle}
+    \caption{Statistic and FileUtil class UML}
+    \label{fig:classdiagram}
 \end{figure}
 
-A main method is used to exercise the \textsc{Shape} library using user input. The main method prompts the user to input the three side lengths of the triangle, constructs a \textsc{Triangle} class object using the supplied input, and prints a string that matches the result of the getType() method.
 
-
+\newpage
 \section{Source Code}
-\begin{listing}[H]
-\inputminted[breaklines,frame=single,linenos]{cpp}{code/Triangle.h}
-\caption{Triangle.h}
-\label{code:triangle.h}
-\end{listing}
+\begin{code}
+\caption{Statistic.h}
+\inputminted[breaklines, frame=single, linenos]{cpp}{code/Statistic.h}
+\label{code:statistic.h}
+\end{code}
+
+\begin{code}
+\caption{Statistic.cpp}
+\inputminted[breaklines, frame=single, linenos]{cpp}{code/Statistic.cpp}
+\label{code:statistic.cpp}
+\end{code}
+
+\begin{code}
+\caption{FileUtil.h}
+\inputminted[breaklines, frame=single, linenos]{cpp}{code/FileUtil.h}
+\label{code:fileutil.h}
+\end{code}
+
+\begin{code}
+\caption{FileUtil.cpp}
+\inputminted[breaklines, frame=single, linenos]{cpp}{code/FileUtil.cpp}
+\label{code:FileUtil.cpp}
+\end{code}
+
+\begin{code}
+\caption{main.cpp}
+\inputminted[breaklines, frame=single, linenos]{cpp}{code/main.cpp}
+\label{code:main.cpp}
+\end{code}
 
 
+\newpage
 \section{Test Driver}
-\begin{listing}[H]
-\inputminted[breaklines,frame=single,linenos]{cpp}{code/test.cpp}
+\begin{code}
 \caption{test.cpp}
+\inputminted[breaklines, frame=single, linenos]{cpp}{code/test.cpp}
 \label{code:test.cpp}
-\end{listing}
-
+\end{code}
 
 \section{Test Results}
 \begin{figure}[H]
